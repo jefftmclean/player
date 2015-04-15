@@ -74,18 +74,20 @@
 	}
 
   document.onkeydown = function(event) {
-		if (!event)
-		  event = window.event;
-		var code = event.keyCode;
-		if (event.charCode && code == 0)
-		  code = event.charCode;
-		switch(code) {
-			case 32: // spacebar
-				togglePlay();
+  	if (!event) {
+  		event = window.event;
+  	}
+  	var code = event.keyCode;
+  	if (event.charCode && code == 0) {
+  		code = event.charCode;
+  	}
+  	switch(code) {
+  		case 32: // spacebar
+  			togglePlay();
 				break;
-		  case 37: // left arrow key
-	      skip("backward");
-	      break;
+			case 37: // left arrow key
+				skip("backward");
+				break;
 		  case 38: // up arrow key
 		  	changeSlide("previous");
 	      break;
@@ -95,7 +97,7 @@
 		  case 40: // down arrow key
 	      changeSlide("next");
 	      break;
-		}
+	    }
 		event.preventDefault();
 	};
 </script>
