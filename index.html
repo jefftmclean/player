@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Audio Thing</title>
+</head>
+<body>
+	<img id="slide" src="slide1.jpg" alt="slide1.jpg">
+	<audio id="audio" src="beatles.m4a" controls="controls"></audio>
+</body>
+<scriptsrc="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script>
+	var slides = [
+  	{
+  		time: 0,
+  		image: "slide1.jpg"
+  	},
+  	{
+  		time: 58,
+  		image: "slide2.jpg"
+  	},
+  	{
+  		time: 111,
+  		image: "slide3.jpg"
+  	},
+  	{
+  		time: 152,
+  		image: "slide4.jpg"
+  	}
+  ]
+
+  var currentSlideIndex;
+
+  var audio = document.getElementById('audio');
+
+  function togglePlay() {
+  	if(!audio.paused){
+  		audio.pause();
+  	} else {
+  		audio.play();
+  	}
+  }
+
+  function checkForNewSlide(){
+  	slides.forEach(function(element, index){
+  		if(Math.floor(audio.currentTime) >= element.time){
+  			currentSlideIndex = index;
+  		}
+  		console.log(currentSlideIndex);
+  		document.getElementById('slide').src = slides[currentSlideIndex].image;
+  	});
+  }
+	setInterval(checkForNewSlide,250);
+
+  function changeSlide(direction) {
+  	var newSlideIndex;
+	  if (direction === "next" && currentSlideIndex < slides.length - 1) {
+	  	currentSlideIndex++;
+	  }
+	  if (direction === "previous" && currentSlideIndex > 0 && Math.floor(audio.currentTime) === slides[currentSlideIndex].time) {
+	  		currentSlideIndex--;
+	  }
+	  audio.currentTime = slides[currentSlideIndex].time;
+	  checkForNewSlide();
+	}
+
+	function skip(direction) {
+		if (direction === "forward") {
+			audio.currentTime += 10;
+		}
+		if (direction === "backward") {
+			audio.currentTime -= 10;
+		}
+		checkForNewSlide();
+	}
+
+  document.onkeydown = function(event) {
+		if (!event)
+		  event = window.event;
+		var code = event.keyCode;
+		if (event.charCode && code == 0)
+		  code = event.charCode;
+		switch(code) {
+			case 32: // spacebar
+				togglePlay();
+				break;
+		  case 37: // left arrow key
+	      skip("backward");
+	      break;
+		  case 38: // up arrow key
+		  	changeSlide("previous");
+	      break;
+		  case 39: // right arrow key
+		  	skip("forward");
+	      break;
+		  case 40: // down arrow key
+	      changeSlide("next");
+	      break;
+		}
+		event.preventDefault();
+	};
+</script>
+</html>
